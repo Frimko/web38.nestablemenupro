@@ -12,7 +12,6 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
-use Bitrix\Web38\Nestablemenupro\SettingsMenuTable;
 
 Loc::loadMessages(__FILE__);
 if (class_exists('web38_nestablemenupro')) return;
@@ -41,10 +40,10 @@ class web38_nestablemenupro extends CModule
         $this->MODULE_ID = "web38.nestablemenupro";
         $this->MODULE_VERSION = $arModuleVersion['VERSION'];
         $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
-        $this->MODULE_NAME = Loc::getMessage("FRIMKO_NESTABLEMENU_REG_MODULE_NAME");
-        $this->MODULE_DESCRIPTION = Loc::getMessage("FRIMKO_NESTABLEMENU_REG_MODULE_DESCRIPTION");
+        $this->MODULE_NAME = Loc::getMessage("FRIMKO_NESTABLEMENU_PRO_REG_MODULE_NAME");
+        $this->MODULE_DESCRIPTION = Loc::getMessage("FRIMKO_NESTABLEMENU_PRO_REG_MODULE_DESCRIPTION");
         $this->MODULE_GROUP_RIGHTS = 'N';
-        $this->PARTNER_NAME = Loc::getMessage("FRIMKO_NESTABLEMENU_PARTNER");
+        $this->PARTNER_NAME = Loc::getMessage("FRIMKO_NESTABLEMENU_PRO_PARTNER");
         $this->PARTNER_URI = "mailto:ccc-car@yandex.ru";
         $this->PATH_FROM = $_SERVER["DOCUMENT_ROOT"] . '/bitrix/modules/' . $this->MODULE_ID;
         $this->PATH_TO = $_SERVER["DOCUMENT_ROOT"] . "/bitrix";
@@ -84,24 +83,25 @@ class web38_nestablemenupro extends CModule
 
     public function installDB()
     {
-        if (Loader::includeModule($this->MODULE_ID)) {
-            SettingsMenuTable::getEntity()->createDbTable();
+       include $this->PATH_FROM . "/lib/SettingsMenuTable.php";
+            Bitrix\Web38\Nestablemenupro\SettingsMenuTable::getEntity()->createDbTable();
             $name = 'new_menu';
-            $data = '[{"id":1,"text":"' . Loc::getMessage("FRIMKO_NESTABLEMENU_NEW_ELEMENT") . '","link":"link","additional_links":"","params":"","permission":"R","hide":"","children":[{"id":2,"text":"' . Loc::getMessage("FRIMKO_NESTABLEMENU_NEW_ELEMENT") . '","link":"link","additional_links":"","params":"","permission":"R","hide":"","children":[{"id":1,"text":"' . Loc::getMessage("FRIMKO_NESTABLEMENU_NEW_ELEMENT") . '","link":"link","additional_links":"","params":"","permission":"","hide":""}]}]}]';
-            SettingsMenuTable::add(array(
+            $data = '[{"id":1,"text":"' . Loc::getMessage("FRIMKO_NESTABLEMENU_PRO_NEW_ELEMENT") . '","link":"link","additional_links":"","params":"","permission":"R","hide":"","children":[{"id":2,"text":"' . Loc::getMessage("FRIMKO_NESTABLEMENU_PRO_NEW_ELEMENT") . '","link":"link","additional_links":"","params":"","permission":"R","hide":"","children":[{"id":1,"text":"' . Loc::getMessage("FRIMKO_NESTABLEMENU_PRO_NEW_ELEMENT") . '","link":"link","additional_links":"","params":"","permission":"","hide":""}]}]}]';
+            Bitrix\Web38\Nestablemenupro\SettingsMenuTable::add(array(
                 'NAME' => $name,
                 'DATA' => $data,
             ));
-        }
+        
     }
 
     public function uninstallDB()
     {
         if (Loader::includeModule($this->MODULE_ID)) {
             $connection = Application::getInstance()->getConnection();
-            if (SettingsMenuTable::getList()) {
-                $connection->dropTable(SettingsMenuTable::getTableName());
+            if (Bitrix\Web38\Nestablemenupro\SettingsMenuTable::getList()) {
+                $connection->dropTable(Bitrix\Web38\Nestablemenupro\SettingsMenuTable::getTableName());
             }
         }
     }
 }
+?>
