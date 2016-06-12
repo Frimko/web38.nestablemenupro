@@ -168,8 +168,8 @@ input.text-input:focus {
 
 .btn-group {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 0px;
+    top:0px;
     display: inline-flex;
     z-index: 2;
     vertical-align: middle;
