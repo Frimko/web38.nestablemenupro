@@ -13,8 +13,8 @@ if($APPLICATION->GetGroupRight("form")>"D")
     $aMenu = array(
         "parent_menu" => "global_menu_services",
         /*"sort" => 100,*/
-        "text" => GetMessage("FRIMKO_NESTABLEMENU_MENU_TITLE"),
-        "title" => GetMessage("FRIMKO_NESTABLEMENU_MENU_MAIN"),
+        "text" => GetMessage("FRIMKO_NESTABLEMENU_PRO_MENU_TITLE"),
+        "title" => GetMessage("FRIMKO_NESTABLEMENU_PRO_MENU_MAIN"),
         "url" => "nestable_menu_show_pro.php?lang=".LANG,
         "icon"=>"default_menu_icon",
         "page_icon"=>"default_page_icon",
