@@ -238,7 +238,7 @@ data-hide="' . $item['HIDE'] . '"
             if ($(this).children().hasClass('glyphicon-eye-open')) {
                 if (!$(this).hasClass('disabled')) {
                     $(this).addClass('disabled');
-                    $(this).parents('li.dd-item:first').find('.glyphicon-eye-close').parent().removeClass('disabled');
+                    $(this).parents('li.dd-item:first').find('.glyphicon-eye-close:first').parent().removeClass('disabled');
                     $(this).parents('li.dd-item:first').attr("data-hide", "").data("hide", "");
                 }
             }
@@ -246,7 +246,9 @@ data-hide="' . $item['HIDE'] . '"
             if ($(this).children().hasClass('glyphicon-eye-close')) {
                 if (!$(this).hasClass('disabled')) {
                     $(this).addClass('disabled');
-                    $(this).parents('li.dd-item:first').find('.glyphicon-eye-open').parent().removeClass('disabled');
+                    console.log($(this).parents('li.dd-item:first').find('.glyphicon-eye-open:first').parent());
+                    console.log($(this).parents('li.dd-item:first'));
+                    $(this).parents('li.dd-item:first').find('.glyphicon-eye-open:first').parent().removeClass('disabled');
                     $(this).parents('li.dd-item:first').attr("data-hide", "disabled").data("hide", "disabled");
                 }
             }
