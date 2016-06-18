@@ -52,7 +52,7 @@ function template_li($id, $item = false)
         $hide['on'] = $item['HIDE'];
     else
         $hide['off'] = 'disabled';
-    $title = $item['TEXT'] . " \"" . $item['LINK'] . "\"";
+    $title = $item['TEXT'] . " | url: " . $item['LINK'] . "";
 
     return '
     <li class="dd-item"
