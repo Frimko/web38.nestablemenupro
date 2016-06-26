@@ -14,11 +14,12 @@ use Bitrix\Web38\Nestablemenupro\SettingsMenuTable;
 $APPLICATION->SetAdditionalCSS('/bitrix/css/' . ADMIN_MODULE_NAME . '/style.css');
 $APPLICATION->SetAdditionalCSS('/bitrix/css/' . ADMIN_MODULE_NAME . '/jquery.selectbox.css');
 $APPLICATION->SetAdditionalCSS('/bitrix/css/' . ADMIN_MODULE_NAME . '/switcher.css');
+
 Asset::getInstance()->addJs('/bitrix/js/' . ADMIN_MODULE_NAME . '/jquery-2.1.4.min.js');
 Asset::getInstance()->addJs('/bitrix/js/' . ADMIN_MODULE_NAME . '/jquery.nestable.js');
 Asset::getInstance()->addJs('/bitrix/js/' . ADMIN_MODULE_NAME . '/jquery.selectbox-0.2.js');
-//Asset::getInstance()->addJs('/bitrix/js/' . ADMIN_MODULE_NAME . '/underscore-min.js');
 Asset::getInstance()->addJs('/bitrix/js/' . ADMIN_MODULE_NAME . '/switcher.js');
+Asset::getInstance()->addJs('/bitrix/js/' . ADMIN_MODULE_NAME . '/popover_tooltipe.js');
 $request = Application::getInstance()->getContext()->getRequest();
 Loc::loadMessages(__FILE__);
 
@@ -41,6 +42,7 @@ if (
 ) {
     $add_new = htmlspecialcharsEx($request->getPost("add_new"));
     $del_menu = htmlspecialcharsEx($request->getPost("del_menu"));
+    $get_list_section = htmlspecialcharsEx($request->getPost("get_list_section"));
     if ($save != "" || $apply != "") { // проверка нажатия кнопок "Сохранить" и "Применить"
        $jsonMenu = $request->getPost("json-menu");
        $menuID = $request->getPost("menu");
@@ -121,6 +123,25 @@ if (
             );
             return true;
         }
+    } elseif (!empty($get_list_section)) {
+
+        CModule::IncludeModule("iblock");
+        $arIBlocks = Array();
+        $db_iblock = CIBlock::GetList();
+        while ($arRes = $db_iblock->Fetch()) $arIBlocks[] = array('id' => $arRes["ID"], 'name' => $arRes["NAME"]);
+
+        array_walk_recursive($arIBlocks, function (&$item) {
+            $item = mb_convert_encoding($item, 'UTF-8', SITE_CHARSET);
+        });
+        $result = json_encode(
+            array(
+                'success' => true,
+                'list' => $arIBlocks
+            )
+        );
+        $result = mb_convert_encoding($result, SITE_CHARSET, 'UTF-8');
+        echo $result;
+        return true;
     }
 
 }

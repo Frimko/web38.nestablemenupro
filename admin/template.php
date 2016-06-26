@@ -16,7 +16,7 @@ if ($arMenu = CNestablemenu::getArrTable()) {
         $title = reset($arMenu)['NAME'];
     }
     //защита от дурака, удал€ющего меню в базе
-    if(strlen($serializeData) < 5) $serializeData = CNestablemenu::getDefaultItem();
+    if (strlen($serializeData) < 5) $serializeData = CNestablemenu::getDefaultItem();
 
     $serializeData = mb_convert_encoding($serializeData, 'UTF-8', SITE_CHARSET);
     $menu = new CNestablemenu;
@@ -70,6 +70,7 @@ data-hide="' . $item['HIDE'] . '"
 <div class="drag-btn url-item"><span>' . $item['LINK'] . '</span></div>
 </div>
 <div class="noDrag-btn btn-group">
+    <div class="btn-default js_select_section" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_ADD_SECTION") . '"><span class="glyphicon glyphicon-th-list"></span></div>
     <div class="btn-default" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_ADD_ELEMENT") . '"><span class="glyphicon glyphicon-plus"></span></div>
     <div class="btn-default" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_EDIT_ELEMENT") . '"><span class="glyphicon glyphicon-pencil"></span></div>
     <div class="btn-default ' . $hide['off'] . ' " title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_SHOW_ELEMENT") . '"><span class="glyphicon glyphicon-eye-open"></span></div>
@@ -81,73 +82,76 @@ data-hide="' . $item['HIDE'] . '"
 
 
 ?>
-<header class="nestable">
-    <div class="inline">
+<div id="nestable_menu">
+    <header class="nestable">
 
-        <div
-            class="selectMenu"><?= CNestablemenu::showSelect($menuID) ?></div>
+        <div class="inline">
 
-        <div class="btn">
-            <div title="ƒобавить меню" class="btn-default js-addMenuBtn"><span class="glyphicon glyphicon-plus"></span>
-            </div>
-            <div class="add_new_menu">
-                <div class="css">
-                    <label for="add_new_menu"><?=Loc::GetMessage("FRIMKO_NESTABLEMENU_NAME_NEW_MENU")?></label>
-                    <input class="js-addNewMenu" id="add_new_menu" type="text" required>
-                    <div style="" class="group-form">
-                        <div class="btn-Form js-btn"><span class="glyphicon glyphicon-ok"></span></div>
+            <div class="selectMenu"><?= CNestablemenu::showSelect($menuID) ?></div>
+
+            <div class="btn">
+                <div title="ƒобавить меню" class="btn-default js-addMenuBtn">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </div>
+                <div class="add_new_menu">
+                    <div class="css">
+                        <label for="add_new_menu"><?= Loc::GetMessage("FRIMKO_NESTABLEMENU_NAME_NEW_MENU") ?></label>
+                        <input class="js-addNewMenu" id="add_new_menu" type="text" required>
+                        <div style="" class="group-form">
+                            <div class="btn-Form js-btn"><span class="glyphicon glyphicon-ok"></span></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div title="<?=Loc::GetMessage("FRIMKO_NESTABLEMENU_DELETE_MENU")?>" class="btn-default js-delMenuBtn"><span class="glyphicon glyphicon-trash"></span>
+                <div title="<?= Loc::GetMessage("FRIMKO_NESTABLEMENU_DELETE_MENU") ?>"
+                     class="btn-default js-delMenuBtn"><span class="glyphicon glyphicon-trash"></span>
+                </div>
             </div>
         </div>
-    </div>
-    <br>
+        <br>
 
-    <div>
-        <label for="exp-collapser"></label>
-        <input id="exp-collapser" type="checkbox" value="switchValue"/>
-    </div>
-</header>
-<main>
+        <div>
+            <label for="exp-collapser"></label>
+            <input id="exp-collapser" type="checkbox" value="switchValue"/>
+        </div>
+    </header>
+    <main>
 
-    <div class="cf nestable-lists">
-        <div class="dd" id="nestable">
-            <ol class="dd-list">
-                <?
-                $flagParent = true;
-                $previousLevel = 0;
-                $id_li = 0;
-                ?>
-
-                <? foreach ($arFullMenu as $arItem): ?>
-                <? $id_li++; ?>
-
-                <? if ($previousLevel && $arItem["DEPTH_LEVEL"] < $previousLevel): ?>
-                    <?= str_repeat("</ol></li>", ($previousLevel - $arItem["DEPTH_LEVEL"])); ?>
-                <? endif ?>
-
-                <? if ($arItem["IS_PARENT"]): ?>
-                <?= template_li($id_li, $arItem); ?>
+        <div class="cf nestable-lists">
+            <div class="dd" id="nestable">
                 <ol class="dd-list">
-                    <? else: ?>
-                        <?= template_li($id_li, $arItem); ?>
-                        </li>
-                    <? endif ?>
-                    <? $previousLevel = $arItem["DEPTH_LEVEL"]; ?>
+                    <?
+                    $flagParent = true;
+                    $previousLevel = 0;
+                    $id_li = 0;
+                    ?>
 
-                    <? endforeach ?>
+                    <? foreach ($arFullMenu as $arItem): ?>
+                    <? $id_li++; ?>
 
-                    <? if ($previousLevel > 1): ?>
-                        <?= str_repeat("</ol></li>", ($previousLevel - 1)); ?>
+                    <? if ($previousLevel && $arItem["DEPTH_LEVEL"] < $previousLevel): ?>
+                        <?= str_repeat("</ol></li>", ($previousLevel - $arItem["DEPTH_LEVEL"])); ?>
                     <? endif ?>
-                </ol>
+
+                    <? if ($arItem["IS_PARENT"]): ?>
+                    <?= template_li($id_li, $arItem); ?>
+                    <ol class="dd-list">
+                        <? else: ?>
+                            <?= template_li($id_li, $arItem); ?>
+                            </li>
+                        <? endif ?>
+                        <? $previousLevel = $arItem["DEPTH_LEVEL"]; ?>
+
+                        <? endforeach ?>
+
+                        <? if ($previousLevel > 1): ?>
+                            <?= str_repeat("</ol></li>", ($previousLevel - 1)); ?>
+                        <? endif ?>
+                    </ol>
+            </div>
         </div>
-    </div>
-    <textarea id="nestable-output-change" name="json-menu"></textarea>
-</main>
-
+        <textarea id="nestable-output-change" name="json-menu"></textarea>
+    </main>
+</div>
 <script type="application/javascript">
     $(document).ready(function () {
         var nameItem, urlItem;
@@ -156,6 +160,7 @@ data-hide="' . $item['HIDE'] . '"
         var newElement = '<?= str_replace(array("\r", "\n"), '', template_li(1)) ?>';
         var expand = '<?=Loc::GetMessage("FRIMKO_NESTABLEMENU_EXPAND_ALL");?>';
         var collapse = '<?=Loc::GetMessage("FRIMKO_NESTABLEMENU_COLLAPSE_ALL");?>';
+        var alertSection = 'Ќельз€ прив€зать раздел в родительский пункт';
 
 
         $('input.js-addNewMenu').each(function () {
@@ -225,9 +230,71 @@ data-hide="' . $item['HIDE'] . '"
         $(function () {
             $("select.select_menu").selectbox();
         });
+
+        window.nestable_menu.addNumber = function ($this) {
+            var id = $($this).data('idBlock');
+            console.log($this);
+            console.log(id);
+        };
+
         $('#nestable').on('click', '.btn-default, .btn-Form', function () {
+
+            /*add buton*/
             if ($(this).children().hasClass('glyphicon-plus')) {
                 $(this).parents('li.dd-item:first').after(newElement);
+            }
+            //console.log($(this).parents('li:first'));
+
+            /*select sections buton*/
+            if ($(this).children().hasClass('glyphicon-th-list')) {
+                var $this = $(this);
+                if ($this.parents('li:first').find('ol').length > 0) {
+                    this.title = alertSection;
+                    $this.tooltip({
+                        container: 'body',
+                        delay: {show: 10, hide: 100},
+                        trigger: 'hover'
+                    });
+                    $this.tooltip('show');
+                } else {
+                    if ($this.hasClass('active')) {
+                        $this.popover('hide');
+                        $this.removeClass('active');
+                    } else {
+                        $this.children('span').removeClass('glyphicon-th-list').addClass('glyphicon-refresh load-animation');
+                        $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+                            data: {
+                                sessid: BX.bitrix_sessid(),
+                                get_list_section: true
+                            },
+                            success: function (json) {
+                                if (json.success) {
+                                    $this.children('span').removeClass('glyphicon-refresh load-animation').addClass('glyphicon-th-list');
+                                    var html = $('<div class="list-group">');
+                                    json.list.forEach(function (value) {
+                                        var text = value.name + ' (' + value.id + ')';
+                                        var htmlChild = $('<a href="javascript:void(0);" onclick="nestable_menu.addNumber(this)" class="list-group-item">').data('idBlock', value.id).text(text);
+                                        html.append(htmlChild);
+                                    });
+                                    $this.popover({
+                                        html: true,
+                                        content: html,
+                                        trigger: 'manual',
+                                        container: 'body',
+                                        placement: 'top'
+                                    });
+                                    $this.popover('show');
+                                    $this.addClass('active');
+                                } else if (json.error) {
+                                    alert(json.text);
+                                }
+                            }
+                        });
+                    }
+                }
+
             }
 
             /*delete buton*/
@@ -246,8 +313,6 @@ data-hide="' . $item['HIDE'] . '"
             if ($(this).children().hasClass('glyphicon-eye-close')) {
                 if (!$(this).hasClass('disabled')) {
                     $(this).addClass('disabled');
-                    console.log($(this).parents('li.dd-item:first').find('.glyphicon-eye-open:first').parent());
-                    console.log($(this).parents('li.dd-item:first'));
                     $(this).parents('li.dd-item:first').find('.glyphicon-eye-open:first').parent().removeClass('disabled');
                     $(this).parents('li.dd-item:first').attr("data-hide", "disabled").data("hide", "disabled");
                 }
@@ -327,12 +392,12 @@ data-hide="' . $item['HIDE'] . '"
                 group: 1,
                 maxDepth: 5,
                 threshold: 10,
-                dragStartEvent: function(e){
-                    if($(e).parents('li.dd-item:first').find('div.input-Form-group').length > 0){
+                dragStartEvent: function (e) {
+                    if ($(e).parents('li.dd-item:first').find('div.input-Form-group').length > 0) {
                         var TextItemsNot =
-                         '<div class="drag-btn name-item"><span>' + nameItem.trim() + '</span></div> ' +
-                         '<div class="drag-btn url-item"><span>' + urlItem.trim() + '</span></div>';
-                         $(e).parents('li.dd-item:first').find('.text-group:first').addClass('dd-dragel').html(TextItemsNot);
+                            '<div class="drag-btn name-item"><span>' + nameItem.trim() + '</span></div> ' +
+                            '<div class="drag-btn url-item"><span>' + urlItem.trim() + '</span></div>';
+                        $(e).parents('li.dd-item:first').find('.text-group:first').addClass('dd-dragel').html(TextItemsNot);
                     }
                 }
             })

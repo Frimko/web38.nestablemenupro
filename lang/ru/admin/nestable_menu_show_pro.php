@@ -8,6 +8,7 @@
 $MESS['FRIMKO_NESTABLEMENU_TAB_TITLE'] = "Настройка меню и сортировки";
 $MESS['FRIMKO_NESTABLEMENU_TAB'] = "Настройки";
 $MESS['FRIMKO_NESTABLEMENU_NEW_ELEMENT'] = "Новый элемент";
+$MESS['FRIMKO_NESTABLEMENU_ADD_SECTION'] = "Выбирите раздел из списка";
 $MESS['FRIMKO_NESTABLEMENU_ADD_ELEMENT'] = "Добавить элемент";
 $MESS['FRIMKO_NESTABLEMENU_EDIT_ELEMENT'] = "Редактировать элемент";
 $MESS['FRIMKO_NESTABLEMENU_SHOW_ELEMENT'] = "Показать элемент";

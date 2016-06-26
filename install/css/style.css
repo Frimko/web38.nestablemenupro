@@ -1,6 +1,27 @@
+@import url('popap.css');
+
 /**
  * Nestable
  */
+
+.load-animation {
+    animation-name: spin;
+    animation-duration: 900ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    z-index: 100;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .btn-group-form {
     z-index: 2;
     vertical-align: middle;
