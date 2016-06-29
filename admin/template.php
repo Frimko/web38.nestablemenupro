@@ -63,6 +63,7 @@ data-additional_links="' . $item['ADDITIONAL_LINKS'] . '"
 data-params="' . $item['PARAMS'] . '"
 data-permission="' . $item['PERMISSION'] . '"
 data-hide="' . $item['HIDE'] . '"
+data-section="' . $item['SECTION'] . '"
 >
 <div title="' . $title . '" class="drag-btn dd-handle">
 <div class="dd-dragel drag-btn text-group">
@@ -70,7 +71,7 @@ data-hide="' . $item['HIDE'] . '"
 <div class="drag-btn url-item"><span>' . $item['LINK'] . '</span></div>
 </div>
 <div class="noDrag-btn btn-group">
-    <div class="btn-default js_select_section" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_ADD_SECTION") . '"><span class="glyphicon glyphicon-th-list"></span></div>
+    <div class="btn-default js_select_section ' . (!empty($item['SECTION']) ? 'active token-section' : '') . '" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_ADD_SECTION") . '"><span class="' . (!empty($item['SECTION']) ? '' : 'glyphicon glyphicon-th-list') . '">' . (!empty($item['SECTION']) ? $item['SECTION'] : '') . '</span></div>
     <div class="btn-default" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_ADD_ELEMENT") . '"><span class="glyphicon glyphicon-plus"></span></div>
     <div class="btn-default" title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_EDIT_ELEMENT") . '"><span class="glyphicon glyphicon-pencil"></span></div>
     <div class="btn-default ' . $hide['off'] . ' " title="' . Loc::GetMessage("FRIMKO_NESTABLEMENU_SHOW_ELEMENT") . '"><span class="glyphicon glyphicon-eye-open"></span></div>
@@ -124,7 +125,6 @@ data-hide="' . $item['HIDE'] . '"
                     $previousLevel = 0;
                     $id_li = 0;
                     ?>
-
                     <? foreach ($arFullMenu as $arItem): ?>
                     <? $id_li++; ?>
 
@@ -149,7 +149,7 @@ data-hide="' . $item['HIDE'] . '"
                     </ol>
             </div>
         </div>
-        <textarea id="nestable-output-change" name="json-menu"></textarea>
+        <textarea id="nestable-output-change" name="json-menu" <!--style="display: block!important;"-->></textarea>
     </main>
 </div>
 <script type="application/javascript">
@@ -233,8 +233,12 @@ data-hide="' . $item['HIDE'] . '"
 
         window.nestable_menu.addNumber = function ($this) {
             var id = $($this).data('idBlock');
-            console.log($this);
-            console.log(id);
+            var $that = $($this).data('$that');
+            $that.popover('destroy');
+            var $span = $that.find('span');
+            $span.removeClass('glyphicon glyphicon-th-list').text(id);
+            $that.parents('li:first').prop('data-section', id).attr('data-section', id).data('section', id);
+            updateOutput($('#nestable').data('output', $('#nestable-output-change')));
         };
 
         $('#nestable').on('click', '.btn-default, .btn-Form', function () {
@@ -243,11 +247,12 @@ data-hide="' . $item['HIDE'] . '"
             if ($(this).children().hasClass('glyphicon-plus')) {
                 $(this).parents('li.dd-item:first').after(newElement);
             }
-            //console.log($(this).parents('li:first'));
 
             /*select sections buton*/
-            if ($(this).children().hasClass('glyphicon-th-list')) {
+            if ($(this).hasClass('js_select_section')) {
                 var $this = $(this);
+                $this.children('span').addClass('glyphicon glyphicon-th-list').empty();
+                $this.parents('li:first').prop('data-section', false).attr('data-section', false).data('section', false);
                 if ($this.parents('li:first').find('ol').length > 0) {
                     this.title = alertSection;
                     $this.tooltip({
@@ -259,8 +264,9 @@ data-hide="' . $item['HIDE'] . '"
                 } else {
                     if ($this.hasClass('active')) {
                         $this.popover('hide');
-                        $this.removeClass('active');
+                        $this.removeClass('active token-section');
                     } else {
+                        var idItemMenu = $this.parents('li:first').data('id');
                         $this.children('span').removeClass('glyphicon-th-list').addClass('glyphicon-refresh load-animation');
                         $.ajax({
                             type: "POST",
@@ -275,7 +281,7 @@ data-hide="' . $item['HIDE'] . '"
                                     var html = $('<div class="list-group">');
                                     json.list.forEach(function (value) {
                                         var text = value.name + ' (' + value.id + ')';
-                                        var htmlChild = $('<a href="javascript:void(0);" onclick="nestable_menu.addNumber(this)" class="list-group-item">').data('idBlock', value.id).text(text);
+                                        var htmlChild = $('<a href="javascript:void(0);" onclick="nestable_menu.addNumber(this)" class="list-group-item">').data('idBlock', value.id).data('$that', $this).text(text);
                                         html.append(htmlChild);
                                     });
                                     $this.popover({
@@ -286,7 +292,7 @@ data-hide="' . $item['HIDE'] . '"
                                         placement: 'top'
                                     });
                                     $this.popover('show');
-                                    $this.addClass('active');
+                                    $this.addClass('active token-section');
                                 } else if (json.error) {
                                     alert(json.text);
                                 }
@@ -364,7 +370,7 @@ data-hide="' . $item['HIDE'] . '"
         });
 
 
-        var updateOutput = function (e) {
+        window.updateOutput = function (e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');
             if (window.JSON) {

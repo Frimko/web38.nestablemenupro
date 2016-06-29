@@ -86,6 +86,7 @@ class CNestablemenu extends CBitrixComponent
                     'IS_PARENT' => true,
                     'DEPTH_LEVEL' => $level,
                     'HIDE' => $row->hide,
+                    'SECTION' => $row->section,
                 );
                 $this->constructMenu($row->children, $level + 1);
             } else {
@@ -98,6 +99,7 @@ class CNestablemenu extends CBitrixComponent
                     'IS_PARENT' => false,
                     'DEPTH_LEVEL' => $level,
                     'HIDE' => $row->hide,
+                    'SECTION' => $row->section,
                 );
             }
         }
