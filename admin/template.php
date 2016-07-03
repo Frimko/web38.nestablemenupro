@@ -91,7 +91,8 @@ data-section="' . $item['SECTION'] . '"
             <div class="selectMenu"><?= CNestablemenu::showSelect($menuID) ?></div>
 
             <div class="btn">
-                <div title="Добавить меню" class="btn-default js-addMenuBtn">
+                <div title="<?= Loc::GetMessage("FRIMKO_NESTABLEMENU_ADD_NEW_MENU") ?>"
+                     class="btn-default js-addMenuBtn">
                     <span class="glyphicon glyphicon-plus"></span>
                 </div>
                 <div class="add_new_menu">
@@ -160,7 +161,7 @@ data-section="' . $item['SECTION'] . '"
         var newElement = '<?= str_replace(array("\r", "\n"), '', template_li(1)) ?>';
         var expand = '<?=Loc::GetMessage("FRIMKO_NESTABLEMENU_EXPAND_ALL");?>';
         var collapse = '<?=Loc::GetMessage("FRIMKO_NESTABLEMENU_COLLAPSE_ALL");?>';
-        var alertSection = 'Нельзя привязать раздел в родительский пункт';
+        var alertSection = '<?=Loc::GetMessage("FRIMKO_NESTABLEMENU_INFO_ALERT_SECTION");?>';
 
 
         $('input.js-addNewMenu').each(function () {
