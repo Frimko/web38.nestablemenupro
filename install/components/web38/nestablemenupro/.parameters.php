@@ -35,7 +35,7 @@ $arComponentParameters = array(
                 "Y" => GetMessage("COMP_PROP_CACHE_TYPE_YES"),
                 "N" => GetMessage("COMP_PROP_CACHE_TYPE_NO"),
             ),
-            "DEFAULT" => "N",
+            "DEFAULT" => "Y",
             "ADDITIONAL_VALUES" => "N",
         ),
 
@@ -44,7 +44,7 @@ $arComponentParameters = array(
             "NAME" => GetMessage("COMP_PROP_CACHE_TIME"),
             "TYPE" => "STRING",
             "MULTIPLE" => "N",
-            "DEFAULT" => 3600,
+            "DEFAULT" => 3600000,
             "COLS" => 5,
         ),
 

@@ -25,8 +25,6 @@ class CNestablemenu extends CBitrixComponent
      * создание массива для меню из оригинального меню (нерабочее)
      *
      * @param array $arChildMenu
-     * @param bool $arFullMenu
-     * @param bool $copy
      * @param int $level
      * @return array|bool
      */
@@ -78,28 +76,28 @@ class CNestablemenu extends CBitrixComponent
         foreach ($arChildMenu as $row) {
             if ($row->children) {
                 $this->arFullMenu[] = array(
-                    'TEXT' => $row->text,
-                    'LINK' => $row->link,
-                    'ADDITIONAL_LINKS' => $row->additional_links,
-                    'PARAMS' => $row->params,
+                    'TEXT' => trim($row->text),
+                    'LINK' => trim($row->link),
+                    'ADDITIONAL_LINKS' => trim($row->additional_links),
+                    'PARAMS' => trim($row->params),
                     'PERMISSION' => "R",
                     'IS_PARENT' => true,
                     'DEPTH_LEVEL' => $level,
-                    'HIDE' => $row->hide,
-                    'SECTION' => $row->section,
+                    'HIDE' => trim($row->hide),
+                    'SECTION' => trim($row->section),
                 );
                 $this->constructMenu($row->children, $level + 1);
             } else {
                 $this->arFullMenu[] = array(
-                    'TEXT' => $row->text,
-                    'LINK' => $row->link,
-                    'ADDITIONAL_LINKS' => $row->additional_links,
-                    'PARAMS' => $row->params,
+                    'TEXT' => trim($row->text),
+                    'LINK' => trim($row->link),
+                    'ADDITIONAL_LINKS' => trim($row->additional_links),
+                    'PARAMS' => trim($row->params),
                     'PERMISSION' => "R",
                     'IS_PARENT' => false,
                     'DEPTH_LEVEL' => $level,
-                    'HIDE' => $row->hide,
-                    'SECTION' => $row->section,
+                    'HIDE' => trim($row->hide),
+                    'SECTION' => trim($row->section),
                 );
             }
         }
