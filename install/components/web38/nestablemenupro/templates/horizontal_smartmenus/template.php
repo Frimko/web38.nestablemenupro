@@ -74,8 +74,8 @@ $APPLICATION->AddHeadScript("{$pathToTemplateFolder}/jquery.smartmenus.js");
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                </li>
                                             <? endif ?>
+                                            </li>
                                         <? endif ?>
 
                                     <? else: ?>
